@@ -1,6 +1,5 @@
 # Redis Common Libraries used by other projects
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) ![Build](https://github.com/cjlapao/common-go-rabbitmq/workflows/Build/badge.svg) ![Release](https://github.com/cjlapao/common-go-rabbitmq/workflows/Release/badge.svg) ![Security](https://github.com/cjlapao/common-go-rabbitmq/workflows/CodeQL/badge.svg)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![PR Builder](https://github.com/cjlapao/common-go-redis/actions/workflows/pr.yml/badge.svg)](https://github.com/cjlapao/common-go-redis/actions/workflows/pr.yml) [![CI Release](https://github.com/cjlapao/common-go-redis/actions/workflows/ci.yml/badge.svg)](https://github.com/cjlapao/common-go-redis/actions/workflows/ci.yml) [![CodeQL](https://github.com/cjlapao/common-go-redis/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/cjlapao/common-go-redis/actions/workflows/codeql-analysis.yml)
 
 This project is used as a common set of libraries to use on my other projects. this might not be as useful without them but feel free to use it as inspiration
-
