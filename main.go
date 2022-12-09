@@ -46,6 +46,18 @@ func New(connString string) *RedisClient {
 	return globalRedisClient
 }
 
+func Get(connString string) *RedisClient {
+	if globalRedisClient != nil {
+		if globalRedisClient.rawConnectionString != connString {
+			return New(connString)
+		}
+
+		return globalRedisClient
+	}
+
+	return New(connString)
+}
+
 func (cli RedisClient) Ping() error {
 	pingCmd := cli.client.Ping(cli.context)
 	_, err := pingCmd.Result()
@@ -92,6 +104,38 @@ func (cli RedisClient) GetAllKeys(prefix string) ([]string, error) {
 	}
 
 	return keys, nil
+}
+
+func (cli RedisClient) AddToList(key string, values ...interface{}) error {
+	cmd := cli.client.LPush(cli.context, key, values)
+
+	_, err := cmd.Result()
+
+	return err
+}
+
+func (cli RedisClient) PopQueueList(key string) (string, error) {
+	cmd := cli.client.RPop(cli.context, key)
+
+	string, err := cmd.Result()
+
+	return string, err
+}
+
+func (cli RedisClient) PopStackList(key string) (string, error) {
+	cmd := cli.client.LPop(cli.context, key)
+
+	val, err := cmd.Result()
+
+	return val, err
+}
+
+func (cli RedisClient) GetListCount(key string) (int64, error) {
+	cmd := cli.client.LLen(cli.context, key)
+
+	count, err := cmd.Result()
+
+	return count, err
 }
 
 func (cli RedisClient) parseConnectionString(connString string) RedisConnectionString {
