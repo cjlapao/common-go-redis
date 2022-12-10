@@ -68,17 +68,17 @@ func (cli RedisClient) Close() error {
 	return cli.client.Close()
 }
 
-func (cli RedisClient) Set(key string, value interface{}) error {
-	return cli.SetExpiring(key, value, 0)
+func (cli RedisClient) SetString(key string, value interface{}) error {
+	return cli.SetExpiringString(key, value, 0)
 }
 
-func (cli RedisClient) SetExpiring(key string, value interface{}, expireIn time.Duration) error {
+func (cli RedisClient) SetExpiringString(key string, value interface{}, expireIn time.Duration) error {
 	cmd := cli.client.Set(cli.context, key, value, expireIn)
 
 	return cmd.Err()
 }
 
-func (cli RedisClient) Get(key string) (string, error) {
+func (cli RedisClient) GetStringKey(key string) (string, error) {
 	cmd := cli.client.Get(cli.context, key)
 
 	result, err := cmd.Result()
@@ -107,7 +107,7 @@ func (cli RedisClient) GetAllKeys(prefix string) ([]string, error) {
 }
 
 func (cli RedisClient) AddToList(key string, values ...interface{}) error {
-	cmd := cli.client.LPush(cli.context, key, values)
+	cmd := cli.client.LPush(cli.context, key, values...)
 
 	_, err := cmd.Result()
 
@@ -132,6 +132,22 @@ func (cli RedisClient) PopStackList(key string) (string, error) {
 
 func (cli RedisClient) GetListCount(key string) (int64, error) {
 	cmd := cli.client.LLen(cli.context, key)
+
+	count, err := cmd.Result()
+
+	return count, err
+}
+
+func (cli RedisClient) TrimList(key string, from int64, to int64) error {
+	cmd := cli.client.LTrim(cli.context, key, from, to)
+
+	_, err := cmd.Result()
+
+	return err
+}
+
+func (cli RedisClient) Delete(keys ...string) (int64, error) {
+	cmd := cli.client.Del(cli.context, keys...)
 
 	count, err := cmd.Result()
 
